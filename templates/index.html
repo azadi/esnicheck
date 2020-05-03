@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+{{ super() }}
+<div class="columns is-centered">
+  <div class="tile is-parent">
+    <article class="tile is-child box notification is-info">
+      <p class="subtitle is-4">Check if a hostname supports <a href="https://blog.mozilla.org/security/2018/10/18/encrypted-sni-comes-to-firefox-nightly/">Encrypted Server Name Indication</a> (ESNI):</p>
+      <form method="post">
+        <div class="field has-addons">
+          <p class="control is-expanded">
+            <input class="input" type="text" placeholder="hostname (example: cloudflare.com)" name="hostname">
+          </p>
+          <p>
+            <button class="button is-success" type="submit"> check </button>
+          </p>
+        </div>
+      </form>
+    </article>
+  </div>
+</div>
+
+<div class="columns is-centered">
+  <div class="tile is-parent">
+    <article class="tile is-child has-text-centered">
+      <p class="subtitle is-5">Checks for TLSv1.3 support and the validity of DNS records (drafts 01 and 02 of the <a href="https://tools.ietf.org/html/draft-ietf-tls-esni-02">RFC</a>) to confirm ESNI support.</p>
+    </article>
+  </div>
+</div>
+
+<div class="columns is-centered">
+  <div class="tile is-parent">
+    <article class="tile is-child has-text-centered">
+      <p class="subtitle is-7">[ maintained by <a href="https://github.com/azadi">azadi</a> | <a href="https://github.com/azadi/esnicheck/">source code</a> ]</p>
+    </article>
+  </div>
+</div>
+{% endblock %}

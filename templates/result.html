@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+{{ super() }}
+{% if result.has_esni %}
+  <article class="message is-success">
+    <div class="message-body">
+      <p class="title is-2 has-text-centered">{{ result.hostname }} supports ESNI ☺</p>
+    </div>
+  </article>
+{% else %}
+  <article class="message is-danger">
+    <div class="message-body">
+      <p class="title is-2 has-text-centered">{{ result.hostname }} does not support ESNI ☹</p>
+    </div>
+  </article>
+{% endif %}
+
+{% if result.tls13.enabled %}
+  <article class="message is-success">
+    <div class="message-header">
+      <p>✓ TLSv1.3</p>
+    </div>
+    <div class="message-body">
+      <p class="subtitle is-5">{{ result.hostname }} supports TLSv1.3.</p>
+    </div>
+  </article>
+{% else %}
+  <article class="message is-danger">
+    <div class="message-header">
+      <p>✗ TLSv1.3</p>
+    </div>
+    <div class="message-body">
+      <p class="subtitle is-5">{{ result.hostname }} does not support TLSv1.3. <br/><strong>{{ result.tls13.output }}</strong>.</p>
+    </div>
+  </article>
+{% endif %}
+
+{% if result.dns.enabled %}
+  <article class="message is-success">
+    <div class="message-header">
+      <p>✓ DNS</p>
+    </div>
+    <div class="message-body">
+      <p class="subtitle is-5">{{ result.hostname }} has valid DNS records for ESNI.</p>
+    </div>
+    <article class="message">
+      <div class="message-body">
+        {% for k, v in result.dns.output.items() %}
+          <strong>{{ k }}</strong>: {{ v }} {% if (k == "version") or (k == "checksum") %} <strong>[valid ✓]</strong>{% endif %}<br/>
+        {% endfor %}
+      </div>
+    </article>
+  </article>
+{% else %}
+  <article class="message is-danger">
+    <div class="message-header">
+      <p>✗ DNS</p>
+    </div>
+    <div class="message-body">
+      <p class="subtitle is-5">{{ result.hostname }} does not have valid DNS records for ESNI. <br/><strong>{{ result.dns.error }}</strong>.</p>
+    </div>
+  </article>
+{% endif %}
+
+{% endblock %}
