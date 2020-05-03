@@ -158,7 +158,7 @@ class ESNICheck:
                 with conn.wrap_socket(sock,
                                       server_hostname=self.hostname) as ssock:
                     protocol = ssock.version()
-        except ConnectionRefusedError:
+        except (ConnectionRefusedError, ConnectionResetError):
             return (False, "Unable to connect to port 443")
         except ssl.CertificateError as error:
             return (False, error.verify_message)
