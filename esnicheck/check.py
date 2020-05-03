@@ -22,6 +22,7 @@ or [the post by CloudFlare](https://blog.cloudflare.com/esni/).
 """
 
 import base64
+import binascii
 import datetime
 import hashlib
 import socket
@@ -152,6 +153,7 @@ class ESNICheck:
         assert ssl.HAS_TLSv1_3
         conn = ssl.create_default_context()
         try:
+            socket.setdefaulttimeout(10)
             with socket.create_connection((self.hostname, 443)) as sock:
                 with conn.wrap_socket(sock,
                                       server_hostname=self.hostname) as ssock:
@@ -162,6 +164,8 @@ class ESNICheck:
             return (False, error.verify_message)
         except socket.gaierror:
             return (False, "Hostname lookup failed")
+        except socket.timeout:
+            return (False, "Hostname connection failed")
         if protocol == "TLSv1.3":
             return (True, protocol)
         else:
@@ -261,7 +265,10 @@ class ESNICheck:
         # Convert the DNS response to a bytearray. This makes it easy to refer
         # to the ESNIKeys struct by comparing the number of bytes each field in
         # the struct occupies and using that as a reference to parse the key.
-        array = bytearray(base64.b64decode(response))
+        try:
+            array = bytearray(base64.b64decode(response))
+        except binascii.Error as e:
+            return False, e, output
 
         # version
         #  The version of the structure.  For this specification, that value
