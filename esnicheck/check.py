@@ -160,8 +160,8 @@ class ESNICheck:
                     protocol = ssock.version()
         except (ConnectionRefusedError, ConnectionResetError):
             return (False, "Unable to connect to port 443")
-        except ssl.CertificateError as error:
-            return (False, error.verify_message)
+        except ssl.SSLError as error:
+            return (False, error.reason)
         except socket.gaierror:
             return (False, "Hostname lookup failed")
         except socket.timeout:
