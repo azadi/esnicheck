@@ -53,3 +53,8 @@ def check():
     hostname = request.args.get("q")
     result = has_esni(hostname)
     return render_template("result.html", result=result)
+
+
+@app.route('/faq', methods=["GET"])
+def faq():
+    return render_template("faq.html")

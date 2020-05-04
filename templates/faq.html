@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+{{ super() }}
+<article class="message is-dark">
+  <div class="message-header">
+    <p>What is ESNI?</p>
+  </div>
+  <div class="message-body has-text-justified">
+    Encrypted Server Name Indication (ESNI) is an extension to TLSv1.3 that encrypts the Server Name Indication (SNI) field in the ClientHello of the TLS handshake. In simpler terms, when you connect to a website example.com, the SNI (example.com) is sent in clear text, even if you have HTTPS enabled. ESNI encrypts this SNI field, thus preventing an observer such as your coffee shop/ISP/government from learning which websites you are visiting.
+    <br><br>
+    For more information, we recommend the posts by <a href="https://www.eff.org/deeplinks/2018/09/esni-privacy-protecting-upgrade-https">EFF</a> and <a href="https://www.cloudflare.com/learning/ssl/what-is-encrypted-sni/">Cloudflare</a> that explain what ESNI is and its importance.
+  </div>
+</article>
+
+<article class="message is-dark">
+  <div class="message-header">
+    <p>Which Websites (Hostnames) Support ESNI?</p>
+  </div>
+  <div class="message-body has-text-justified">
+    Use <a href={{ url_for("landing") }}>esnicheck.com</a> to check if your favourite website supports ESNI!
+    <br><br>
+    Google, YouTube, Facebook, Amazon do not support ESNI. Cloudflare <a href="https://blog.cloudflare.com/esni/">supports ESNI</a> and therefore websites served by it (like <a href="https://medium.com">medium.com</a>) should support ESNI as well.
+  </div>
+</article>
+
+<article class="message is-dark">
+  <div class="message-header">
+    <p>Which Browsers Support ESNI?</p>
+  </div>
+  <div class="message-body has-text-justified">
+    (You need both client-side and server-side support for ESNI to work.)
+    <br><br>
+    Mozilla Firefox is the only browser that currently <a href="https://blog.mozilla.org/security/2018/10/18/encrypted-sni-comes-to-firefox-nightly/">supports ESNI</a>. Please follow <a href="https://blog.cloudflare.com/encrypt-that-sni-firefox-edition/">these steps</a> for enabling ESNI support in Firefox.
+  </div>
+</article>
+
+<article class="message is-dark">
+  <div class="message-header">
+    <p>About This Website</p>
+  </div>
+  <div class="message-body has-text-justified">
+    This website does not check if your browser (or your client) supports ESNI: it only checks if a hostname (website) supports ESNI by checking for TLSv1.3 support and the validity of DNS records (drafts 01 and 02 of the RFC). The motivation for this service is the hope that it will encourage the adoption of ESNI, helping increase the privacy of users on the internet.
+    <br><br>
+    For more information, see the <a href="https://github.com/azadi/esnicheck/">source code</a>.
+  </div>
+</article>
+{% endblock %}

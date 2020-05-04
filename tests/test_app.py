@@ -35,3 +35,9 @@ def test_check():
         assert post.status_code == 200
         incorrect_post = client.post("/check", json={"domain": "domain"})
         assert incorrect_post.status_code == 404
+
+
+def test_faq():
+    client = app.app.test_client()
+    response = client.get("/faq", content_type="html/text")
+    assert response.status_code == 200
