@@ -24,7 +24,7 @@
 {% if data.websites %}
 <article class="message is-success">
   <div class="message-body">
-    <p class="subtitle is-4">{{ data.percentage }}% of the top 100 most visited websites in the world support ESNI.</p>
+    <p class="subtitle is-4">{{ data.percentage }}% of the <a href="https://raw.githubusercontent.com/azadi/esnicheck/master/mostvisited.txt">top 100 most visited websites</a> in the world support ESNI:</p>
     <div class="content">
       <ul>
         {% for each in data.websites %}
