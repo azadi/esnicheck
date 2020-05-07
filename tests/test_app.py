@@ -1,6 +1,11 @@
-from unittest.mock import patch
+from unittest.mock import patch, mock_open
 
 import app
+
+
+def test_most_visited():
+    with patch("builtins.open", mock_open(read_data="a\nb")):
+        assert ["a", "b"] == app.most_visited()
 
 
 def test_has_esni():

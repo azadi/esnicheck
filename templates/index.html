@@ -8,7 +8,7 @@
       <form method="post">
         <div class="field has-addons">
           <p class="control is-expanded">
-            <input class="input" type="text" placeholder="hostname (example: cloudflare.com)" name="hostname">
+            <input class="input" type="text" placeholder="cloudflare.com" name="hostname">
           </p>
           <p>
             <button class="button is-success" type="submit"> check </button>
@@ -20,6 +20,21 @@
     </article>
   </div>
 </div>
+
+{% if data.websites %}
+<article class="message is-success">
+  <div class="message-body">
+    <p class="subtitle is-4">{{ data.percentage }}% of the top 100 most visited websites in the world support ESNI.</p>
+    <div class="content">
+      <ul>
+        {% for each in data.websites %}
+        <li>{{ each }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</article>
+{% endif %}
 
 <div class="columns is-centered">
   <div class="tile is-parent">

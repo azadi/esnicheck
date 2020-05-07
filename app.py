@@ -13,6 +13,14 @@ from esnicheck.check import ESNICheck
 app = Flask(__name__)
 
 
+def most_visited():
+    sites = []
+    with app.open_resource("mostvisitedesni.txt", "r") as f:
+        for each in f:
+            sites.append(each.strip())
+    return sites
+
+
 def has_esni(hostname):
     esni = ESNICheck(hostname)
     (tls13, tls13_output) = esni.has_tls13()
@@ -36,9 +44,13 @@ def has_esni(hostname):
 
 @app.route('/', methods=["GET", "POST"])
 def landing():
+    esni_sites = most_visited()
+    # Let's do top 100 for now, maybe we will do top-250 later.
+    data = {"websites": esni_sites,
+            "percentage": (len(esni_sites) / 100) * 100}
     if request.method == "POST":
         return redirect(url_for('check', q=request.form['hostname']))
-    return render_template("index.html")
+    return render_template("index.html", data=data)
 
 
 @app.route('/check', methods=["GET", "POST"])
