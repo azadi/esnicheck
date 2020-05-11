@@ -1,4 +1,4 @@
-![esnicheck](static/esni.png)
+![esnicheck](static/esnicheck.svg)
 
 # ESNICheck
 
