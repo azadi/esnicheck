@@ -1,3 +1,5 @@
+import os
+
 from flask import (
     abort,
     Flask,
@@ -15,7 +17,8 @@ app = Flask(__name__)
 
 def most_visited():
     sites = []
-    with app.open_resource("mostvisitedesni.txt", "r") as f:
+    file_path = os.path.join("mostvisited", "esni.txt")
+    with app.open_resource(file_path, "r") as f:
         for each in f:
             sites.append(each.strip())
     return sites
