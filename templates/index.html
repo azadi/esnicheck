@@ -16,7 +16,7 @@
         </div>
       </form>
       <br>
-      <p class="subtitle is-4"><a href={{ url_for("faq") }}>What is ESNI?</a></p>
+      <p class="subtitle is-4"><a href={{ url_for("faq") }}>Frequently Asked Questions</a></p>
     </article>
   </div>
 </div>
@@ -28,7 +28,7 @@
     <div class="content">
       <ul>
         {% for each in data.websites %}
-        <li>{{ each }}</li>
+        <li><a href={{ url_for("check", q=each) }}>{{ each }}</a></li>
         {% endfor %}
       </ul>
     </div>
@@ -36,10 +36,20 @@
 </article>
 {% endif %}
 
+<article class="message is-dark">
+  <div class="message-body">
+    <p class="subtitle is-6">API</p>
+    <div class="content">
+      <textarea class="textarea is-family-code is-dark is-size-7" rows="2" readonly>$ curl -X POST -H "Content-Type: application/json" -d '{"q":"cloudflare.com"}' https://esnicheck.com/check
+{"has_esni":true}</textarea>
+    </div>
+  </div>
+</article>
+
 <div class="columns is-centered">
   <div class="tile is-parent">
     <article class="tile is-child has-text-centered">
-      <p class="subtitle is-7">[ maintained by <a href="https://github.com/azadi">azadi</a> | <a href="https://github.com/azadi/esnicheck/">source code</a> ]</p>
+      <p class="subtitle is-7">[ <a href="https://github.com/azadi/esnicheck/">source code</a> ]</p>
     </article>
   </div>
 </div>

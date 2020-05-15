@@ -10,7 +10,7 @@ def main():
             if not each.startswith("#"):
                 urls.append(each.strip())
 
-    with open("mostvisitedesni.txt", "w") as w:
+    with open("esni.txt", "w") as w:
         for each in urls:
             has_esni = ESNICheck(each).has_esni()
             if has_esni:
