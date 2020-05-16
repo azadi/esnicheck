@@ -24,13 +24,13 @@
 {% if data.websites %}
 <article class="message is-success">
   <div class="message-body">
-    <p class="subtitle is-4">{{ data.percentage }}% of the <a href="https://raw.githubusercontent.com/azadi/esnicheck/master/mostvisited/mostvisited.txt">top 100 most visited websites</a> in the world support ESNI:</p>
+    <p class="subtitle is-4">{{ "%.2f"|format(data.percentage) }}% of the <a href="https://raw.githubusercontent.com/azadi/esnicheck/master/mostvisited/mostvisited.txt">top 250 most visited websites</a> in the world support ESNI:</p>
     <div class="content">
-      <ul>
+      <ol>
         {% for each in data.websites %}
         <li><a href={{ url_for("check", q=each) }}>{{ each }}</a></li>
         {% endfor %}
-      </ul>
+      </ol>
     </div>
   </div>
 </article>

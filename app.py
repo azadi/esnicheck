@@ -48,9 +48,8 @@ def has_esni(hostname):
 @app.route('/', methods=["GET", "POST"])
 def landing():
     esni_sites = most_visited()
-    # Let's do top 100 for now, maybe we will do top-250 later.
     data = {"websites": esni_sites,
-            "percentage": (len(esni_sites) / 100) * 100}
+            "percentage": (len(esni_sites) / 250) * 100}
     if request.method == "POST":
         return redirect(url_for('check', q=request.form['hostname']))
     return render_template("index.html", data=data)
