@@ -24,7 +24,7 @@
 {% if data.websites %}
 <article class="message is-success">
   <div class="message-body">
-    <p class="subtitle is-4">{{ "%.2f"|format(data.percentage) }}% of the <a href="https://raw.githubusercontent.com/azadi/esnicheck/master/mostvisited/mostvisited.txt">top 250 most visited websites</a> in the world support ESNI:</p>
+    <p class="subtitle is-4">{{ data.percentage | round }}% of the <a href="https://raw.githubusercontent.com/azadi/esnicheck/master/mostvisited/mostvisited.txt">top 250 most visited websites</a> in the world support ESNI:</p>
     <div class="content">
       <ol>
         {% for each in data.websites %}
@@ -32,6 +32,7 @@
         {% endfor %}
       </ol>
     </div>
+  <p class="subtitle is-7">Last checked on Sep 25 2020</p>
   </div>
 </article>
 {% endif %}
