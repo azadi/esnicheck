@@ -30,7 +30,7 @@
       <ol>
         {% for host in data.websites.keys() %}
         <li>
-          <a href={{ url_for("check", q=host) }}>{{ host }}</a>
+          <a href={{ url_for("check", q=host) }}><font class="has-text-weight-semibold">{{ host }}</font></a>
           {% if data.websites[host]['is_cf'] %}<font class="has-text-danger is-size-7">Cloudflare</font>{% endif %}
         </li>
         {% endfor %}
