@@ -25,10 +25,14 @@
 <article class="message is-success">
   <div class="message-body">
     <p class="subtitle is-4">{{ data.percentage | round }}% of the <a href="https://raw.githubusercontent.com/azadi/esnicheck/master/mostvisited/mostvisited.txt">top 250 most visited websites</a> in the world support ESNI:</p>
+    <p class="subtitle is-6">{{ data.cf_percentage | round }}% of those websites are behind Cloudflare: <font class="is-italic">that's a problem</font>.</p>
     <div class="content">
       <ol>
-        {% for each in data.websites %}
-        <li><a href={{ url_for("check", q=each) }}>{{ each }}</a></li>
+        {% for host in data.websites.keys() %}
+        <li>
+          <a href={{ url_for("check", q=host) }}>{{ host }}</a>
+          {% if data.websites[host]['is_cf'] %}<font class="has-text-danger is-size-7">Cloudflare</font>{% endif %}
+        </li>
         {% endfor %}
       </ol>
     </div>

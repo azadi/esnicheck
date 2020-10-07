@@ -1,18 +1,56 @@
-chaturbate.com
-worldometers.info
-udemy.com
-padlet.com
-youm7.com
-canva.com
-xhamster.com
-mediafire.com
-metropoles.com
-ilovepdf.com
-y2mate.com
-discord.com
-albawabhnews.com
-quizlet.com
-dostor.org
-ladbible.com
-hdfcbank.com
-medium.com
+{
+  "chaturbate.com": {
+    "is_cf": true
+  },
+  "worldometers.info": {
+    "is_cf": true
+  },
+  "udemy.com": {
+    "is_cf": true
+  },
+  "padlet.com": {
+    "is_cf": true
+  },
+  "youm7.com": {
+    "is_cf": true
+  },
+  "canva.com": {
+    "is_cf": true
+  },
+  "xhamster.com": {
+    "is_cf": true
+  },
+  "mediafire.com": {
+    "is_cf": true
+  },
+  "metropoles.com": {
+    "is_cf": true
+  },
+  "ilovepdf.com": {
+    "is_cf": true
+  },
+  "y2mate.com": {
+    "is_cf": true
+  },
+  "discord.com": {
+    "is_cf": true
+  },
+  "albawabhnews.com": {
+    "is_cf": true
+  },
+  "quizlet.com": {
+    "is_cf": true
+  },
+  "dostor.org": {
+    "is_cf": true
+  },
+  "ladbible.com": {
+    "is_cf": true
+  },
+  "hdfcbank.com": {
+    "is_cf": true
+  },
+  "medium.com": {
+    "is_cf": true
+  }
+}

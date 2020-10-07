@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import (
     abort,
@@ -16,11 +17,10 @@ app = Flask(__name__)
 
 
 def most_visited():
-    sites = []
+    sites = {}
     file_path = os.path.join("mostvisited", "esni.txt")
     with app.open_resource(file_path, "r") as f:
-        for each in f:
-            sites.append(each.strip())
+        sites = json.load(f)
     return sites
 
 
@@ -48,8 +48,12 @@ def has_esni(hostname):
 @app.route('/', methods=["GET", "POST"])
 def landing():
     esni_sites = most_visited()
+    len_esni_sites_cf = len([site for site in esni_sites.keys()
+                             if esni_sites[site]['is_cf']])
+    len_esni_sites = len(esni_sites)
     data = {"websites": esni_sites,
-            "percentage": (len(esni_sites) / 250) * 100}
+            "cf_percentage": (len_esni_sites_cf / len_esni_sites) * 100,
+            "percentage": (len_esni_sites / 250) * 100}
     if request.method == "POST":
         return redirect(url_for('check', q=request.form['hostname']))
     return render_template("index.html", data=data)

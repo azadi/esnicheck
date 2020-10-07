@@ -4,8 +4,8 @@ import app
 
 
 def test_most_visited():
-    with patch("builtins.open", mock_open(read_data="a\nb")):
-        assert ["a", "b"] == app.most_visited()
+    with patch("builtins.open", mock_open(read_data='{"website": {"is_cf": true}}')):
+        assert {"website": {"is_cf": True}} == app.most_visited()
 
 
 def test_has_esni():
