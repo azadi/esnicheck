@@ -1,4 +1,7 @@
 {
+  "okezone.com": {
+    "is_cf": true
+  },
   "chaturbate.com": {
     "is_cf": true
   },
