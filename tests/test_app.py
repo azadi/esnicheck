@@ -31,6 +31,7 @@ def test_has_esni():
                 'has_esni': False,
                 'host_ip': 0, 'is_host_cf': False} == app.has_esni("test")
 
+
 def test_landing():
     client = app.app.test_client()
     response = client.get("/", content_type="html/text")

@@ -254,7 +254,7 @@ class ESNICheck:
         host_address = dns.resolver.query(self.hostname, "A")
         ip_address = host_address[0].address
         return (ip_address, any(ipaddress.IPv4Address(ip_address) in network
-                            for network in cf_ips))
+                                for network in cf_ips))
 
     def has_dns(self):
         """Checks if a hostname has ESNI keys and confirms their validity.
