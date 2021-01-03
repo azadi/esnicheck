@@ -28,6 +28,7 @@ def has_esni(hostname):
     esni = ESNICheck(hostname)
     (tls13, tls13_output) = esni.has_tls13()
     (dns, error, dns_output) = esni.has_dns()
+    (host_ip, is_host_cf) = esni.is_cloudflare()
 
     result = dict()
 
@@ -42,6 +43,8 @@ def has_esni(hostname):
 
     result["hostname"] = hostname
     result["has_esni"] = esni.has_esni()
+    result["host_ip"] = host_ip
+    result["is_host_cf"] = is_host_cf
     return result
 
 
@@ -55,6 +58,8 @@ def landing():
             "cf_percentage": (len_esni_sites_cf / len_esni_sites) * 100,
             "percentage": (len_esni_sites / 250) * 100}
     if request.method == "POST":
+        if not request.form['hostname']:
+            return redirect(url_for('landing'))
         return redirect(url_for('check', q=request.form['hostname']))
     return render_template("index.html", data=data)
 

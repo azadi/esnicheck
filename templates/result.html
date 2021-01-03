@@ -5,6 +5,9 @@
   <article class="message is-success">
     <div class="message-body">
       <p class="title is-2 has-text-centered">{{ result.hostname }} supports ESNI ☺</p>
+      {% if result.is_host_cf %}
+        <p class="subtitle is-6 has-text-centered is-italic">{{ result.hostname }} on IP address {{ result.host_ip }} is hosted by Cloudflare</p>
+      {% endif %}
     </div>
   </article>
 {% else %}

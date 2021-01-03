@@ -11,21 +11,25 @@ def test_most_visited():
 def test_has_esni():
     with patch("esnicheck.check.ESNICheck.has_tls13") as mock_tls, \
             patch("esnicheck.check.ESNICheck.has_dns") as mock_dns, \
-            patch("esnicheck.check.ESNICheck.has_esni") as mock_esni:
+            patch("esnicheck.check.ESNICheck.has_esni") as mock_esni, \
+            patch("esnicheck.check.ESNICheck.is_cloudflare") as mock_is_cf:
         mock_tls.side_effect = [[True, "TLSv1.3"],
                                 [False, "Test supports TLSv1.2"]]
         mock_dns.side_effect = [[True, None, {}],
                                 [True, None, {}]]
         mock_esni.side_effect = [True, False]
+        mock_is_cf.side_effect = [[0, False],
+                                  [0, False]]
         assert {'tls13': {'enabled': True, 'output': 'TLSv1.3'},
                 'dns': {'enabled': True, 'output': {}, 'error': None},
-                'hostname': 'Test',
-                'has_esni': True} == app.has_esni("Test")
+                'hostname': 'test',
+                'has_esni': True,
+                'host_ip': 0, 'is_host_cf': False} == app.has_esni("test")
         assert {'tls13': {'enabled': False, 'output': 'Test supports TLSv1.2'},
                 'dns': {'enabled': True, 'output': {}, 'error': None},
-                'hostname': 'Test',
-                'has_esni': False} == app.has_esni("Test")
-
+                'hostname': 'test',
+                'has_esni': False,
+                'host_ip': 0, 'is_host_cf': False} == app.has_esni("test")
 
 def test_landing():
     client = app.app.test_client()

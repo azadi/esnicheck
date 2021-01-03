@@ -25,6 +25,7 @@ import base64
 import binascii
 import datetime
 import hashlib
+import ipaddress
 import socket
 import ssl
 import textwrap
@@ -220,6 +221,40 @@ class ESNICheck:
         :return int: the integer value of the bytearray
         """
         return int(arr.hex(), 16)
+
+    def is_cloudflare(self):
+        """Check if the hostname is behind Cloudflare.
+
+        We do this by checking if the A record for the domain points to an IP
+        address that is in the list of IPv4 ranges of and provided by
+        Cloudflare.
+
+        :return tuple: (str: IP address, bool: if IP is a Cloudflare IP)
+        """
+        # From https://www.cloudflare.com/ips-v4.
+        cf_ips = [
+            ipaddress.IPv4Network(network) for network in [
+                "173.245.48.0/20",
+                "103.21.244.0/22",
+                "103.22.200.0/22",
+                "103.31.4.0/22",
+                "141.101.64.0/18",
+                "108.162.192.0/18",
+                "190.93.240.0/20",
+                "188.114.96.0/20",
+                "197.234.240.0/22",
+                "198.41.128.0/17",
+                "162.158.0.0/15",
+                "104.16.0.0/12",
+                "172.64.0.0/13",
+                "131.0.72.0/22",
+            ]
+        ]
+
+        host_address = dns.resolver.query(self.hostname, "A")
+        ip_address = host_address[0].address
+        return (ip_address, any(ipaddress.IPv4Address(ip_address) in network
+                            for network in cf_ips))
 
     def has_dns(self):
         """Checks if a hostname has ESNI keys and confirms their validity.
