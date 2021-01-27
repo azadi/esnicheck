@@ -32,9 +32,6 @@
   "ilovepdf.com": {
     "is_cf": true
   },
-  "y2mate.com": {
-    "is_cf": true
-  },
   "discord.com": {
     "is_cf": true
   },
