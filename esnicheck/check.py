@@ -361,34 +361,63 @@ class ESNICheck:
         # here, but we will fix that for when the draft is finalized.
         array = array[6:]
 
-        # I am making an assumption that there is just one key (NamedGroup)
-        # here but that may not be correct. On the other hand, most
-        # implementations (read: CloudFlare) also have a single key, so I guess
-        # we should be OK for now? But this definitely needs to be revisited.
+        # There might be multiple keys, depending on the length of all the key
+        # share entries and on the length of each key exchange. Therefore, 
+        # tracking the covered length in bytes and using a while loop whilst
+        # comparing that covered length to the actual key share entries vector's
+        # length is a way to ensure getting all the keys.
         #
-        # This gets us the length of the KeyShareEntry.
+        # This gets us the length of all the key share entries
         keyshare_length = self.to_int(array[:2])
 
-        #     NamedGroup group;
-        #
-        # The NamedGroup is the next two bytes.
-        named_group = TLS_NAMED_GROUPS[array[2:4].hex()]
-        output["keys [0]"] = named_group
+        # Chomp the array in order to start at the first key share entry
+        array = array[2:]
 
-        #     opaque key_exchange<1..2^16-1>;
-        #
-        # This holds the actual value of the key. While most implementations
-        # use x25519 with a 32-byte key, let's not make that assumption.
-        key_exchange = array[4:keyshare_length].hex()
-        output["keys_value [0]"] = self.format_hex(key_exchange)
+        # The very first key share entry corresponds to key number 0
+        covered_length = 0
+        key_nb = 0
+        while covered_length < keyshare_length:
+            #     NamedGroup group;
+            #
+            # The NamedGroup is the next two bytes.
+            named_group = TLS_NAMED_GROUPS[array[:2].hex()]
+            output["keys [{}]".format(key_nb)] = named_group
+            covered_length += 2
 
-        # Chomp again, we have parsed NamedGroup.
-        # 4 bytes for the length and NamedGroup; rest is key_exchange.
-        array = array[4+keyshare_length:]
+            #     opaque key_exchange<1..2^16-1>;
+            #
+            # This holds the actual value of the key. While most implementations
+            # use x25519 with a 32-byte key, let's not make that assumption.
+            key_exchange_length = self.to_int(array[2:4])
+            covered_length += 2
+
+            key_exchange = array[4:4+key_exchange_length].hex()
+            output["keys_value [{}]".format(key_nb)] = self.format_hex(key_exchange)
+
+            # Chomp the array to go to the end of the current key share entry, 
+            # either to the beginning of the next one, or to the next section
+            array = array[4+key_exchange_length:]
+            covered_length += key_exchange_length
+            key_nb += 1
 
         #     CipherSuite cipher_suites<2..2^16-2>;
-        cipher = array[:2].hex()
-        output["cipher_suites"] = TLS_CIPHERS[cipher]
+        # Just like the key share entries, there might be more than one cipher suite,
+        # so we need to get the total length of the cipher_suites vector. However, each
+        # CipherSuite element is exactly 2-byte long, so there is no need to keep track
+        # of the covered length. Instead, a simple division gives us the number of 
+        # cipher suites.
+        ciphers_length = self.to_int(array[:2])
+        nb_of_ciphers = int(ciphers_length / 2)
+        
+        # Chomp the array in order to start at the first cipher suite
+        array = array[2:]
+
+        for cipher_nb in range(nb_of_ciphers):
+            cipher = TLS_CIPHERS[array[:2].hex()]
+            output["cipher_suites[{}]".format(cipher_nb)] = cipher
+
+            # Chomp the array to get to the next cipher, or to the next section
+            array = array[2:]
 
         # padded_length
         #  The length to pad the ServerNameList value to prior to encryption.
@@ -397,7 +426,7 @@ class ESNICheck:
         #  server supports wildcard names, it SHOULD set this value to 260.
         #
         #     uint16 padded_length;
-        padded_len = self.to_int(array[2:4])
+        padded_len = self.to_int(array[:2])
         output["padded_length"] = padded_len
 
         # not_before
@@ -408,14 +437,14 @@ class ESNICheck:
         # We convert the epoch to UTC. (uint64, so 8 bytes).
         #
         #     uint64 not_before;
-        not_before = self.to_int(array[4:12])
+        not_before = self.to_int(array[2:10])
         output["not_before"] = datetime.datetime.utcfromtimestamp(not_before)
 
         # not_after
         #  The moment when the keys become invalid.  Uses the same unit as
         #  not_before.
         #     uint64 not_after;
-        not_after = self.to_int(array[12:20])
+        not_after = self.to_int(array[10:18])
         output["not_after"] = datetime.datetime.utcfromtimestamp(not_after)
 
         # extensions
@@ -426,7 +455,7 @@ class ESNICheck:
         #  any extension.
         #
         #  Extension extensions<0..2^16-1>;
-        extensions = array[20:]
+        extensions = array[18:]
         output["extensions"] = self.format_hex(extensions.hex())
 
         return True, None, output
