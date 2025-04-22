@@ -1,5 +1,9 @@
 ![esnicheck](static/esnicheck.svg)
 
+⚠️  This repository was last updated in Jan 2021 and is no longer maintained. The ESNI protocol has been deprecated in favour of [ECH (Encrypted Client Hello)](https://datatracker.ietf.org/doc/draft-ietf-tls-esni/), and there is little technical overlap between ESNI and ECH, even if they share the same intent. We will be working on echcheck.com instead.
+
+We are preserving this website for historical reasons but the information presented here should be considered outdated and incorrect. Additionally, and not surprisingly perhaps, things may not work as expected.
+
 # ESNICheck
 
 ![esnicheck](https://github.com/azadi/esnicheck/workflows/build/badge.svg)
